@@ -24,7 +24,7 @@ The `container/` directory tracks which coffee beans are stored in each containe
 
 | Container | Status |
 |-----------|--------|
-| [Container 1](container/1.md) | Contains [Monkey Bite - Bird Rock Coffee Roasters](bean/86.Bird-Rock-Monkey-Bite.md) |
+| [Container 1](container/1.md) | Contains [Borbon Wonder, Colombia - Seven Seas Roasting Co.](bean/87.Seven-Seas-Borbon-Wonder-Colombia.md) |
 | [Container 2](container/2.md) | Contains [Peru - El Santuario (Fairtrade / Certified Organic) - Seven Seas Roasting Co.](bean/82.Peru-El-Santuario-Seven-Seas.md) |
 | [Container 3](container/3.md) | Contains [Frexico - Caffè Calabria](bean/83.Caffe-Calabria-Frexico.md) |
 | [Container 4](container/4.md) | Contains [Vague Reminder - Steady State](bean/85.Steady-State-Vague-Reminder.md) |
