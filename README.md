@@ -26,7 +26,7 @@ The `container/` directory tracks which coffee beans are stored in each containe
 |-----------|--------|
 | [Container 1](container/1.md) | Contains [Organic Peru - Better Buzz Coffee](bean/89.Better-Buzz-Organic-Peru.md) |
 | [Container 2](container/2.md) | Contains [Bronson French Roast - Verve Coffee Roasters](bean/88.Verve-Bronson-French-Roast.md) |
-| [Container 3](container/3.md) | Contains [Frexico - Caffè Calabria](bean/83.Caffe-Calabria-Frexico.md) |
+| [Container 3](container/3.md) | Contains [Trader Joe's Sulawesi](bean/90.Trader-Joes-Sulawesi.md) |
 | [Container 4](container/4.md) | Contains [Vague Reminder - Steady State](bean/85.Steady-State-Vague-Reminder.md) |
 | [Container 5](container/5.md) | Contains [ETHIOPIA - Benti Nenka - Anaerobic Natural - Dark Horse Coffee Roasters](bean/84.Dark-Horse-Ethiopia-Benti-Nenka.md) |
 | [Container 6](container/6.md) | Empty - Ready to be filled |
