@@ -1,107 +1,191 @@
 # How to Add a New Coffee to Your Tracking System
 
-This document outlines the step-by-step process for adding a new coffee to the personal coffee tracking system.
+This doc is the playbook for adding a new coffee and assigning it to a container. The stickers on the containers point at stable URLs that auto-redirect to whichever bean the container currently holds — so the only work on a swap is editing files in this repo.
 
-1.  **Gather Coffee Information**:
-    *   Find the product page for the new coffee.
-    *   Note down key details such as:
-        *   Coffee Name
-        *   Roaster Name
-        *   Flavor Notes
-        *   Roast Level (Light, Medium, Dark, etc.)
-        *   Origin (Country, Region - if available)
-        *   Processing Method (Washed, Natural, Honey, etc. - if available)
-        *   Altitude (if available)
-        *   Varietal (if available)
-        *   Certifications (Organic, Fair Trade, etc. - if available)
-        *   A brief description from the roaster
-        *   Package size/weight
-        *   The URL of the product page.
+## TL;DR — Swap a coffee in one container
 
-2.  **Check for Existing Entry (Optional but Recommended)**:
-    *   Quickly search the `bean/` directory to see if an entry for this coffee already exists to avoid duplicates.
-        *   *Example Gemini command:* `default_api.grep_search(query="Coffee Name", include_pattern="bean/*.md")`
+1. Create `bean/NN.Roaster-Coffee.md` (next sequential number)
+2. Overwrite `container/X.md` with new `redirect_to:` front-matter and a new markdown link
+3. Update the matching row in `README.md`
+4. `git add … && git commit && git push origin master`
 
-3.  **Determine the Next Bean File Number**:
-    *   Look in the `bean/` directory and find the highest number currently used for a coffee file (e.g., if the last file is `86.Some-Coffee.md`, the next number is 87).
-        *   *Example Gemini command:* `default_api.run_terminal_cmd(command="ls -1 bean/ | sort -n | tail -1")` (This shows the last file, from which you derive the next number).
+GitHub Pages rebuilds in ~1 minute and the existing NFC sticker for that container starts pointing at the new bean.
 
-4.  **Create the New Coffee Bean File**:
-    *   Create a new markdown file in the `bean/` directory. The naming convention is `XX.Roaster-Name-Coffee-Name.md` (e.g., `87.SuperRoaster-AmazingBlend.md`).
-    *   Populate this file with the following structure and information:
+---
 
-        ```markdown
-        # Coffee Name - Roaster Name
+## 1. Gather coffee information
 
-        ### Description
-        Flavor Notes (e.g., Dark Chocolate, Ripe Cherry, Toasted Almond)
+Prefer the **bag in your hand** over the web. The bag is the source of truth. Capture only what's actually printed on it; do not invent fields the bag does not list (process method, varietal, altitude, region within a country, etc.).
 
-        ROAST: [e.g., Medium-Dark]
-        ORIGIN: [e.g., Ethiopia, Yirgacheffe]
-        PROCESS: [e.g., Washed]
-        ALTITUDE: [e.g., 1800-2200 Meters]
-        VARIETAL: [e.g., Heirloom Ethiopian Varieties]
-        CERTIFICATION: [e.g., USDA Organic]
+If you have the product page open in a browser, the `mcp__browser-control__browser_markdown` tool can pull a clean Markdown dump. If you only have the physical bag, photograph the front and back and read directly off the images.
 
-        [Brief description from the roaster about the coffee. Include any interesting facts or details.]
+Fields worth recording when present:
 
-        [Package size/weight, e.g., 12 oz / 340g]
+- Coffee Name
+- Roaster Name
+- Flavor / tasting notes (quote the bag)
+- Roast level (Light / Medium / Dark / etc.)
+- Origin (country, region — only if printed)
+- Process (Washed / Natural / Honey / Wet-hulled — only if printed)
+- Altitude (only if printed)
+- Varietal (only if printed)
+- Certifications (Organic, Fair Trade, Rainforest Alliance, KSA Pareve, etc.)
+- Roast date / Best-by date (handy for freshness)
+- Package size/weight
+- Product page URL (if there is one)
 
-        ## La Pavoni Settings
+**Rule:** if a field is not on the bag or product page, leave it out. Don't infer "typical for Indonesian coffees" → "wet-hulled" or similar. Bag-only facts.
 
-        Grind: ?
+## 2. Check for an existing entry
 
-        Weight: ?
+Quick grep to avoid duplicates:
+
+```bash
+grep -li -E "coffee-name|roaster" bean/*.md
+```
+
+## 3. Determine the next bean file number
+
+```bash
+ls -1 bean/ | sort -t. -k1 -n | tail -1
+```
+
+The next number is `<that number> + 1`. (As of the last commit, the highest is `90.Trader-Joes-Sulawesi.md`.)
+
+## 4. Create the bean file
+
+Path: `bean/NN.Roaster-Name-Coffee-Name.md` (hyphens, no spaces, ASCII).
+
+Template — include only sections for which the bag actually has data:
+
+```markdown
+# Coffee Name - Roaster Name
+
+### Description
+Notes: [tasting notes from bag, comma-separated]
+
+ROAST: [Medium / Dark / etc.]
+ORIGIN: [Country, Region — only if printed]
+PROCESS: [only if printed]
+ALTITUDE: [only if printed]
+VARIETAL: [only if printed]
+CERTIFICATION: [Organic, Fair Trade, KSA Pareve, etc.]
+
+[Optional one-paragraph blurb from the bag or roaster site. Skip if there isn't one.]
+
+Roasted On: YYYY-MM-DD
+Best By: YYYY-MM-DD
+
+12 oz (340g)
+
+## La Pavoni Settings
+
+Grind: ?
+
+Weight: ?
 
 
-        [Product Page](URL_to_product_page)
-        ```
-    *   Replace the bracketed placeholders `[]` with the actual information. Leave `Grind: ?` and `Weight: ?` as placeholders to be filled in after you brew the coffee.
-        *   *Example Gemini action:* `default_api.edit_file(target_file="bean/XX.New-Coffee.md", code_edit="<content_above>")`
+[Product Page](URL)
+```
 
-5.  **Update the Container File**:
-    *   Decide which container will hold this new coffee (e.g., `container/4.md`).
-    *   Open the corresponding container file.
-    *   **Important**: Since each container can only hold one coffee, replace any existing coffee link with the new one. If the container was marked as empty, remove the `*Empty - Ready to be filled*` line.
-    *   The content should be:
+Leave `Grind: ?` and `Weight: ?` until you've dialed it in on the machine. Update later — see `dcf0a6d` for that pattern.
 
-        ```markdown
-        ---
-        redirect_to: https://github.com/dmarkham/Coffee/blob/master/bean/XX.New-Coffee.md
-        ---
-        # Container X
+## 5. Update the container file
 
-        [Coffee Name - Roaster Name](../bean/XX.New-Coffee.md)
-        ```
-    *   The `redirect_to:` front-matter powers the NFC stickers — `https://dmarkham.github.io/Coffee/container/X` resolves through GitHub Pages and redirects to the current bean. Update both the front-matter URL and the markdown link when swapping coffees so the sticker keeps working.
+Each container holds exactly one coffee. Overwrite `container/X.md` completely:
 
-6.  **Update the README.md File**:
-    *   Open the `README.md` file.
-    *   Find the table under the "Storage Containers" section.
-    *   Update the row for the container you just used to reflect its new content. For example, if you put the new coffee in Container 4:
+```markdown
+---
+redirect_to: https://github.com/dmarkham/Coffee/blob/master/bean/NN.New-Coffee.md
+---
+# Container X
 
-        ```markdown
-        | [Container 4](container/4.md) | Contains [Coffee Name - Roaster Name](bean/XX.New-Coffee.md) |
-        ```
-    *   Make sure the link points to the correct new bean file.
-        *   *Example Gemini action:* `default_api.edit_file(target_file="README.md", code_edit="// ... existing code ...\n| [Container X](container/X.md) | Contains [Coffee Name - Roaster Name](bean/XX.New-Coffee.md) |\n// ... existing code ...")`
+[Coffee Name - Roaster Name](../bean/NN.New-Coffee.md)
+```
 
-7.  **Commit Changes to Git**:
-    *   Open your terminal.
-    *   Add the new and modified files to the staging area:
-        ```bash
-        git add bean/XX.New-Coffee.md container/X.md README.md Doc.md
-        ```
-        (Or use `git add .` to add all changes in the current directory and subdirectories).
-    *   Commit the changes with a descriptive message:
-        ```bash
-        git commit -m "Add [Coffee Name] to Container X and update system (plus documentation)"
-        ```
-        (Replace `[Coffee Name]` and `X` with specifics).
-    *   Push the changes to your remote repository (e.g., GitHub):
-        ```bash
-        git push origin master
-        ```
-        (Or just `git push` if your upstream branch is set).
+Both the `redirect_to:` URL **and** the markdown link must point at the new bean file. The front-matter is what makes the NFC sticker resolve to the right coffee (see "NFC stickers" below).
 
-This process ensures that your coffee bean details, container assignments, the main README, and this documentation file are all consistent and up-to-date. When you later brew the coffee and find good La Pavoni settings, you can then edit the specific bean file to record those grind and weight parameters. 
+If you're moving a container back to empty, drop the front-matter entirely and write:
+
+```markdown
+# Container X
+
+*Empty - Ready to be filled*
+```
+
+## 6. Update README.md
+
+In the Storage Containers table, edit the row for the container you changed:
+
+```markdown
+| [Container X](container/X.md) | Contains [Coffee Name - Roaster Name](bean/NN.New-Coffee.md) |
+```
+
+(Links from `README.md` use `container/...` and `bean/...` — no `../` since the README sits at the repo root.)
+
+## 7. Commit and push
+
+```bash
+git add bean/NN.New-Coffee.md container/X.md README.md
+git commit -m "Add <Coffee Name> to Container X, replacing previous coffee"
+git push origin master
+```
+
+Use the same commit-message style as the recent history (`git log --oneline`).
+
+Per the repo's git rules: SSH remote, explicit `origin master` on push, no Co-Authored-By lines, no Claude/Generated-With footers.
+
+## 8. (Optional) Verify the redirect
+
+Wait ~1 minute for GitHub Pages to rebuild, then:
+
+```bash
+gh api repos/dmarkham/Coffee/pages/builds/latest --jq '{status,commit}'
+curl -s https://dmarkham.github.io/Coffee/container/X | grep -i 'url='
+```
+
+The `url=` line should contain the new bean filename.
+
+---
+
+## NFC stickers — how the redirect works
+
+Each container has a physical NFC sticker on it. The sticker encodes one **stable** URL:
+
+```
+https://dmarkham.github.io/Coffee/container/1
+https://dmarkham.github.io/Coffee/container/2
+https://dmarkham.github.io/Coffee/container/3
+https://dmarkham.github.io/Coffee/container/4
+https://dmarkham.github.io/Coffee/container/5
+https://dmarkham.github.io/Coffee/container/6
+```
+
+These URLs **never change**. Tapping the sticker hits GitHub Pages, which serves the rendered `container/X.md` — and because of the `redirect_to:` YAML front-matter, that page is a meta-refresh / JS redirect straight to the current bean's GitHub view.
+
+So the stickers are write-once. All future swaps are file edits in this repo.
+
+### Infrastructure pieces (one-time setup, already done)
+
+- `_config.yml` enables the `jekyll-redirect-from` plugin (allowlisted on GitHub Pages).
+- GitHub Pages is enabled on `master` / root (`gh api -X POST repos/dmarkham/Coffee/pages -f 'source[branch]=master' -f 'source[path]=/'`).
+- Each populated `container/N.md` carries `redirect_to: <bean URL>` in its front-matter.
+
+### Empty containers
+
+A container with no coffee should have **no** front-matter — just `# Container X` and the "Empty" line. Without `redirect_to:`, Jekyll renders it as a normal page (no redirect), which is what you want for an empty slot.
+
+---
+
+## Filling in La Pavoni settings later
+
+Once you've dialed in grind and weight on the machine:
+
+```bash
+# Edit bean/NN.Coffee.md, replace `Grind: ?` and `Weight: ?` with real values
+git add bean/NN.Coffee.md
+git commit -m "Update <Coffee Name> brewing parameters with latest experience"
+git push origin master
+```
+
+No container or README change needed for brew-setting updates.
