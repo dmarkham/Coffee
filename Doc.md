@@ -66,11 +66,14 @@ This document outlines the step-by-step process for adding a new coffee to the p
     *   The content should be:
 
         ```markdown
+        ---
+        redirect_to: https://github.com/dmarkham/Coffee/blob/master/bean/XX.New-Coffee.md
+        ---
         # Container X
 
         [Coffee Name - Roaster Name](../bean/XX.New-Coffee.md)
         ```
-        *   *Example Gemini action:* `default_api.edit_file(target_file="container/X.md", code_edit="# Container X\n\n[Coffee Name - Roaster Name](../bean/XX.New-Coffee.md)")`
+    *   The `redirect_to:` front-matter powers the NFC stickers — `https://dmarkham.github.io/Coffee/container/X` resolves through GitHub Pages and redirects to the current bean. Update both the front-matter URL and the markdown link when swapping coffees so the sticker keeps working.
 
 6.  **Update the README.md File**:
     *   Open the `README.md` file.
