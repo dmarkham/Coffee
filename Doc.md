@@ -96,12 +96,14 @@ Each container holds exactly one coffee. Overwrite `container/X.md` completely:
 
 ```markdown
 ---
-redirect_to: https://github.com/dmarkham/Coffee/blob/master/bean/NN.New-Coffee.md
+redirect_to: https://dmarkham.github.io/Coffee/bean/NN.New-Coffee.html
 ---
 # Container X
 
 [Coffee Name - Roaster Name](../bean/NN.New-Coffee.md)
 ```
+
+Note the `redirect_to:` URL is the **GitHub Pages** rendered page (`.html`, on `dmarkham.github.io`), not the github.com blob URL — so the NFC tap lands on the pretty themed page, which also has a "← Coffee Collection" home link back to the main page.
 
 Both the `redirect_to:` URL **and** the markdown link must point at the new bean file. The front-matter is what makes the NFC sticker resolve to the right coffee (see "NFC stickers" below).
 
@@ -161,13 +163,14 @@ https://dmarkham.github.io/Coffee/container/5
 https://dmarkham.github.io/Coffee/container/6
 ```
 
-These URLs **never change**. Tapping the sticker hits GitHub Pages, which serves the rendered `container/X.md` — and because of the `redirect_to:` YAML front-matter, that page is a meta-refresh / JS redirect straight to the current bean's GitHub view.
+These URLs **never change**. Tapping the sticker hits GitHub Pages, which serves the rendered `container/X.md` — and because of the `redirect_to:` YAML front-matter, that page is a meta-refresh / JS redirect straight to the current bean's rendered page on the Pages site (`https://dmarkham.github.io/Coffee/bean/NN.New-Coffee.html`).
 
 So the stickers are write-once. All future swaps are file edits in this repo.
 
 ### Infrastructure pieces (one-time setup, already done)
 
 - `_config.yml` enables the `jekyll-redirect-from` plugin (allowlisted on GitHub Pages).
+- `_layouts/default.html` overrides the Primer theme layout to add a "← Coffee Collection" home link at the top of every page except the homepage.
 - GitHub Pages is enabled on `master` / root (`gh api -X POST repos/dmarkham/Coffee/pages -f 'source[branch]=master' -f 'source[path]=/'`).
 - Each populated `container/N.md` carries `redirect_to: <bean URL>` in its front-matter.
 
