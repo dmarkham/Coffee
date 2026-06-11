@@ -2,6 +2,8 @@
 
 A personal coffee tracking system for documenting coffee beans, brewing parameters, and storage.
 
+**🌐 View the website: [dmarkham.github.io/Coffee](https://dmarkham.github.io/Coffee/)**
+
 ## Project Overview
 
 This repository serves as a personal knowledge management system for keeping track of:
